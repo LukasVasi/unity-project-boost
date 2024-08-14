@@ -321,22 +321,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket
       objectReference: {fileID: 0}
-    - target: {fileID: 761848132588383748, guid: de36b0cddc4a19d4992cd238fe89cd86, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326907382289515877, guid: de36b0cddc4a19d4992cd238fe89cd86, type: 3}
-      propertyPath: m_Drag
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4326907382289515877, guid: de36b0cddc4a19d4992cd238fe89cd86, type: 3}
-      propertyPath: m_Constraints
-      value: 56
-      objectReference: {fileID: 0}
-    - target: {fileID: 6757628979249874072, guid: de36b0cddc4a19d4992cd238fe89cd86, type: 3}
-      propertyPath: m_rotationTorque
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 8979052004648791605, guid: de36b0cddc4a19d4992cd238fe89cd86, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

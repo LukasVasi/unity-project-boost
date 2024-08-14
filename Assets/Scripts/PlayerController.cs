@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
 
-[RequireComponent (typeof(Rigidbody))]
+[RequireComponent (typeof(Rigidbody), typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Rocket Movement")]
+
     [SerializeField]
     private float m_thrustForce = 10.0f;
 
@@ -12,9 +14,32 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody m_rigidbody;
 
+    private AudioSource m_audioSource;
+
     private void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody>();
+        m_audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+        UpdateThrusterAudio();
+    }
+
+    private void UpdateThrusterAudio()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space))
+        {
+            if (!m_audioSource.isPlaying) 
+            {
+                m_audioSource.Play();
+            }
+        }
+        else if (m_audioSource.isPlaying)
+        {
+            m_audioSource.Stop();
+        }
     }
 
     private void FixedUpdate()
