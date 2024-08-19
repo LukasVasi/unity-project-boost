@@ -4,17 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Collider), typeof(PlayerController))]
+[RequireComponent(typeof(Collider), typeof(PlayerController), typeof(AudioSource))]
 public class CollisionHandler : MonoBehaviour
 {
-    [SerializeField]
-    private float m_handlingDelay = 1.5f;
+    [SerializeField] private float m_handlingDelay = 1.5f;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip m_crashSound;
+    [SerializeField] private AudioClip m_successSound;
+
+    private AudioSource m_audioSource;
     private PlayerController m_playerController;
 
     private void Awake()
     {
         m_playerController = GetComponent<PlayerController>();
+        m_audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -26,11 +31,13 @@ public class CollisionHandler : MonoBehaviour
                 break;
             case "Goal":
                 m_playerController.enabled = false;
+                m_audioSource.PlayOneShot(m_successSound);
                 Debug.Log("You've completed the level");
                 Invoke("HandleComplete", m_handlingDelay);
                 break;
             default:
                 m_playerController.enabled = false;
+                m_audioSource.PlayOneShot(m_crashSound);
                 Debug.Log("You've crashed");
                 Invoke("HandleCrash", m_handlingDelay);
                 break;

@@ -5,15 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Rocket Movement")]
+    [SerializeField] private float m_thrustForce = 775.0f;
+    [SerializeField] private float m_rotationTorque = 175.0f;
 
-    [SerializeField]
-    private float m_thrustForce = 10.0f;
-
-    [SerializeField]
-    private float m_rotationTorque = 10.0f;
+    [Header("SFX")]
+    [SerializeField] private AudioClip m_thrusterSound;
 
     private Rigidbody m_rigidbody;
-
     private AudioSource m_audioSource;
 
     private void Awake()
@@ -33,7 +31,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!m_audioSource.isPlaying) 
             {
-                m_audioSource.Play();
+                m_audioSource.PlayOneShot(m_thrusterSound);
             }
         }
         else if (m_audioSource.isPlaying)
