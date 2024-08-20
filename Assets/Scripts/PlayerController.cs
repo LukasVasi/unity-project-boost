@@ -5,24 +5,24 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Rocket Movement")]
-    [SerializeField] private float m_thrustForce = 775.0f;
-    [SerializeField] private float m_rotationTorque = 175.0f;
+    [SerializeField] private float m_ThrustForce = 775.0f;
+    [SerializeField] private float m_RotationTorque = 50.0f;
 
     [Header("SFX")]
-    [SerializeField] private AudioClip m_thrusterSound;
+    [SerializeField] private AudioClip m_ThrusterSound;
 
     [Header("Particles")]
-    [SerializeField] private ParticleSystem m_mainThrusterParticles;
-    [SerializeField] private ParticleSystem m_rightThrusterParticles;
-    [SerializeField] private ParticleSystem m_leftThrusterParticles;
+    [SerializeField] private ParticleSystem m_MainThrusterParticles;
+    [SerializeField] private ParticleSystem m_RightThrusterParticles;
+    [SerializeField] private ParticleSystem m_LeftThrusterParticles;
 
-    private Rigidbody m_rigidbody;
-    private AudioSource m_audioSource;
+    private Rigidbody m_Rigidbody;
+    private AudioSource m_AudioSource;
 
     private void Awake()
     {
-        m_rigidbody = GetComponent<Rigidbody>();
-        m_audioSource = GetComponent<AudioSource>();
+        m_Rigidbody = GetComponent<Rigidbody>();
+        m_AudioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -35,38 +35,38 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            if (!m_mainThrusterParticles.isPlaying)
+            if (!m_MainThrusterParticles.isPlaying)
             {
-                m_mainThrusterParticles.Play();
+                m_MainThrusterParticles.Play();
             }
         }
         else
         {
-            m_mainThrusterParticles.Stop();
+            m_MainThrusterParticles.Stop();
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            if (!m_leftThrusterParticles.isPlaying)
+            if (!m_LeftThrusterParticles.isPlaying)
             {
-                m_leftThrusterParticles.Play();
+                m_LeftThrusterParticles.Play();
             }
         }
         else
         {
-            m_leftThrusterParticles.Stop();
+            m_LeftThrusterParticles.Stop();
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            if (!m_rightThrusterParticles.isPlaying)
+            if (!m_RightThrusterParticles.isPlaying)
             {
-                m_rightThrusterParticles.Play();
+                m_RightThrusterParticles.Play();
             }
         }
         else
         {
-            m_rightThrusterParticles.Stop();
+            m_RightThrusterParticles.Stop();
         }
     }
 
@@ -74,14 +74,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space))
         {
-            if (!m_audioSource.isPlaying) 
+            if (!m_AudioSource.isPlaying) 
             {
-                m_audioSource.PlayOneShot(m_thrusterSound);
+                m_AudioSource.PlayOneShot(m_ThrusterSound);
             }
         }
-        else if (m_audioSource.isPlaying)
+        else if (m_AudioSource.isPlaying)
         {
-            m_audioSource.Stop();
+            m_AudioSource.Stop();
         }
     }
 
@@ -97,23 +97,23 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            rotationTorque += m_rotationTorque;
+            rotationTorque += m_RotationTorque;
             
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            rotationTorque -= m_rotationTorque;
+            rotationTorque -= m_RotationTorque;
         }
 
-        m_rigidbody.AddRelativeTorque(Vector3.forward * rotationTorque * Time.deltaTime);
+        m_Rigidbody.AddRelativeTorque(Vector3.forward * rotationTorque * Time.deltaTime);
     }
 
     private void ProcessThrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            m_rigidbody.AddRelativeForce(Vector3.up * m_thrustForce * Time.deltaTime);
+            m_Rigidbody.AddRelativeForce(Vector3.up * m_ThrustForce * Time.deltaTime);
         }
     }
 }

@@ -2,33 +2,52 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Collider), typeof(PlayerController), typeof(AudioSource))]
+[RequireComponent(typeof(PlayerController), typeof(AudioSource))]
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] private float m_levelLoadDelay = 1.5f;
 
     [Header("SFX")]
-    [SerializeField] private AudioClip m_crashSound;
-    [SerializeField] private AudioClip m_successSound;
+    [SerializeField] private AudioClip m_CrashSound;
+    [SerializeField] private AudioClip m_SuccessSound;
 
     [Header("Particles")]
-    [SerializeField] private ParticleSystem m_crashParticles;
-    [SerializeField] private ParticleSystem m_successParticles;
+    [SerializeField] private ParticleSystem m_CrashParticles;
+    [SerializeField] private ParticleSystem m_SuccessParticles;
 
-    private AudioSource m_audioSource;
-    private PlayerController m_playerController;
+    private AudioSource m_AudioSource;
+    private PlayerController m_PlayerController;
 
-    private bool m_isTransitioning = false;
+    private bool m_IsTransitioning = false;
+    private bool m_CollisionHandlingEnabled = true;
 
     private void Awake()
     {
-        m_playerController = GetComponent<PlayerController>();
-        m_audioSource = GetComponent<AudioSource>();
+        m_PlayerController = GetComponent<PlayerController>();
+        m_AudioSource = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+        RespondToDebugKeys();
+    }
+
+    private void RespondToDebugKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            HandleComplete();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            m_CollisionHandlingEnabled = !m_CollisionHandlingEnabled;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (m_isTransitioning) return;
+        if (m_IsTransitioning || !m_CollisionHandlingEnabled) return;
 
         switch (collision.gameObject.tag) 
         {
@@ -46,14 +65,14 @@ public class CollisionHandler : MonoBehaviour
 
     private void HandleComplete()
     {
-        if (m_isTransitioning) return;
+        if (m_IsTransitioning) return;
 
-        m_isTransitioning = true;
+        m_IsTransitioning = true;
 
-        m_playerController.enabled = false;
-        m_audioSource.Stop();
-        m_audioSource.PlayOneShot(m_successSound);
-        m_successParticles.Play();
+        m_PlayerController.enabled = false;
+        m_AudioSource.Stop();
+        m_AudioSource.PlayOneShot(m_SuccessSound);
+        m_SuccessParticles.Play();
         Debug.Log("You've completed the level");
 
         int currentLevelBuildIndex = SceneManager.GetActiveScene().buildIndex;
@@ -63,14 +82,14 @@ public class CollisionHandler : MonoBehaviour
 
     private void HandleCrash()
     {
-        if (m_isTransitioning) return;
+        if (m_IsTransitioning) return;
 
-        m_isTransitioning = true;
+        m_IsTransitioning = true;
         
-        m_playerController.enabled = false;
-        m_audioSource.Stop();
-        m_audioSource.PlayOneShot(m_crashSound);
-        m_crashParticles.Play();
+        m_PlayerController.enabled = false;
+        m_AudioSource.Stop();
+        m_AudioSource.PlayOneShot(m_CrashSound);
+        m_CrashParticles.Play();
         Debug.Log("You've crashed");
 
         int currentLevelBuildIndex = SceneManager.GetActiveScene().buildIndex;
