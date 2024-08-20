@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +10,10 @@ public class CollisionHandler : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip m_crashSound;
     [SerializeField] private AudioClip m_successSound;
+
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem m_crashParticles;
+    [SerializeField] private ParticleSystem m_successParticles;
 
     private AudioSource m_audioSource;
     private PlayerController m_playerController;
@@ -51,6 +53,7 @@ public class CollisionHandler : MonoBehaviour
         m_playerController.enabled = false;
         m_audioSource.Stop();
         m_audioSource.PlayOneShot(m_successSound);
+        m_successParticles.Play();
         Debug.Log("You've completed the level");
 
         int currentLevelBuildIndex = SceneManager.GetActiveScene().buildIndex;
@@ -67,6 +70,7 @@ public class CollisionHandler : MonoBehaviour
         m_playerController.enabled = false;
         m_audioSource.Stop();
         m_audioSource.PlayOneShot(m_crashSound);
+        m_crashParticles.Play();
         Debug.Log("You've crashed");
 
         int currentLevelBuildIndex = SceneManager.GetActiveScene().buildIndex;

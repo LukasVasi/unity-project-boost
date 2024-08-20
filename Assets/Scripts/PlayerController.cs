@@ -11,6 +11,11 @@ public class PlayerController : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip m_thrusterSound;
 
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem m_mainThrusterParticles;
+    [SerializeField] private ParticleSystem m_rightThrusterParticles;
+    [SerializeField] private ParticleSystem m_leftThrusterParticles;
+
     private Rigidbody m_rigidbody;
     private AudioSource m_audioSource;
 
@@ -23,6 +28,46 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateThrusterAudio();
+        UpdateThrusterParticles();
+    }
+
+    private void UpdateThrusterParticles()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (!m_mainThrusterParticles.isPlaying)
+            {
+                m_mainThrusterParticles.Play();
+            }
+        }
+        else
+        {
+            m_mainThrusterParticles.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            if (!m_leftThrusterParticles.isPlaying)
+            {
+                m_leftThrusterParticles.Play();
+            }
+        }
+        else
+        {
+            m_leftThrusterParticles.Stop();
+        }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (!m_rightThrusterParticles.isPlaying)
+            {
+                m_rightThrusterParticles.Play();
+            }
+        }
+        else
+        {
+            m_rightThrusterParticles.Stop();
+        }
     }
 
     private void UpdateThrusterAudio()
