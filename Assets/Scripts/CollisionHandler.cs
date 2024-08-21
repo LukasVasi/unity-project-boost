@@ -2,10 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(PlayerController), typeof(AudioSource))]
+[RequireComponent(typeof(PlayerController), typeof(AudioSource), typeof(Rigidbody))]
 public class CollisionHandler : MonoBehaviour
 {
-    [SerializeField] private float m_levelLoadDelay = 1.5f;
+    [SerializeField] private float m_LevelLoadDelay = 1.5f;
+    [SerializeField] private float m_CrashVelocityThreshold = 10f;
 
     [Header("SFX")]
     [SerializeField] private AudioClip m_CrashSound;
@@ -17,6 +18,7 @@ public class CollisionHandler : MonoBehaviour
 
     private AudioSource m_AudioSource;
     private PlayerController m_PlayerController;
+    private Rigidbody m_Rigidbody;
 
     private bool m_IsTransitioning = false;
     private bool m_CollisionHandlingEnabled = true;
@@ -25,6 +27,7 @@ public class CollisionHandler : MonoBehaviour
     {
         m_PlayerController = GetComponent<PlayerController>();
         m_AudioSource = GetComponent<AudioSource>();
+        m_Rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -48,6 +51,12 @@ public class CollisionHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (m_IsTransitioning || !m_CollisionHandlingEnabled) return;
+
+        if(collision.relativeVelocity.magnitude > m_CrashVelocityThreshold)
+        {
+            HandleCrash();
+            return;
+        }
 
         switch (collision.gameObject.tag) 
         {
@@ -98,7 +107,7 @@ public class CollisionHandler : MonoBehaviour
 
     private IEnumerator LoadLevelAfterDelay(int levelBuildIndex)
     {
-        yield return new WaitForSeconds(m_levelLoadDelay);
+        yield return new WaitForSeconds(m_LevelLoadDelay);
         SceneManager.LoadScene(levelBuildIndex);
     }
 }

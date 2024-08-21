@@ -196,7 +196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26f1d616fe7f764f80f0e709277a0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_levelLoadDelay: 1.5
+  m_LevelLoadDelay: 1.5
+  m_CrashVelocityThreshold: 8
   m_CrashSound: {fileID: 8300000, guid: 7c8bf05f200dfcd4b90b9242cb3860fb, type: 3}
   m_SuccessSound: {fileID: 8300000, guid: 95084c7ce17d44242ba31ab7cf54d5ba, type: 3}
   m_CrashParticles: {fileID: 1852037832339627496}
